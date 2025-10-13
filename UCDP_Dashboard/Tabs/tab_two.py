@@ -1,4 +1,3 @@
-
 import streamlit as st
 import plotly.express as px
 from Dataset.dataset import UCDP_Data
@@ -12,13 +11,13 @@ class tab_two:
         st.write(
             "The Trends tab shows how different types of conflict deaths change over time. "
             "Users can filter by year, violence type, and country to view interactive line charts "
-            "that reveal major shifts and patterns in global violence."
+            "that reveal majosr shifts and patterns in global violence."
         )
 
         # Sidebar controls
         st.sidebar.header("Tab 2 Controls")
         year_min, year_max = self.data_handler.get_year_range()
-        year_range = st.sidebar.slider("Select Year Range", year_min, year_max, (2000, 2020), key="slider_tab2")
+        year_range = st.sidebar.slider("Select Year Range", year_min, year_max, (2000, 2020), key = "slider_tab2")
 
         violence_types = {
             "sb_total_deaths_best_cy": "State-based",
@@ -28,14 +27,14 @@ class tab_two:
         }
         type_selected = st.sidebar.selectbox(
             "Select Type of Violence",
-            options=list(violence_types.keys()),
-            format_func=lambda x: violence_types[x]
+            options = list(violence_types.keys()),
+            format_func = lambda x: violence_types[x]
         )
 
         countries = st.sidebar.multiselect(
             "Select Countries",
             self.data_handler.get_countries(),
-            default=[],
+            default = [],
             key="multiselect_tab2"
         )
 
@@ -50,10 +49,10 @@ class tab_two:
         deaths_per_year = filtered.groupby("year_cy")[type_selected].sum().reset_index()
         fig_time = px.line(
             deaths_per_year,
-            x="year_cy",
-            y=type_selected,
-            title=f"Deaths Over Time ({violence_types[type_selected]})",
-            labels={type_selected: "Deaths", "year_cy": "Year"}
+            x = "year_cy",
+            y = type_selected,
+            title = f"Deaths Over Time ({violence_types[type_selected]})",
+            labels = {type_selected: "Deaths", "year_cy": "Year"}
         )
         
         st.plotly_chart(fig_time, use_container_width=True)
