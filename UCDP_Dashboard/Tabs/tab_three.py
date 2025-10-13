@@ -1,3 +1,4 @@
+import pandas as pd
 import streamlit as st
 import plotly.express as px
 from Dataset.dataset import UCDP_Data
@@ -31,8 +32,6 @@ class tab_three:
         filtered = self.data_handler.filter_data(year_range, countries)
         filtered = self.data_handler.clean_death_counts(filtered)
 
-        # Prepare data for animation
-        import pandas as pd
         # Melt the data
         melted = filtered.melt(
             id_vars = ["year_cy", "country_cy"],
