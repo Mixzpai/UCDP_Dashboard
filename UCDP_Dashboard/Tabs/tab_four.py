@@ -7,7 +7,7 @@ class tab_four:
     def __init__(self):
         self.data_handler = UCDP_Data()
 
-    def display(self):
+    def display(self, sidebar):
         st.header("Regional Analysis")
         st.write(
             "The Regional Analysis tab provides insights into conflict-related deaths across different regions. "
@@ -16,10 +16,11 @@ class tab_four:
             "within the selected region, helping users understand the geographical distribution of violence."
         )
 
-        # Sidebar controls
-        st.sidebar.header("Tab 4 Controls")
+        # Sidebar controls (render into provided container)
+        sidebar.header("Tab 4 Controls")
+        filters = sidebar.expander("Filters", expanded=True)
         year_min, year_max = self.data_handler.get_year_range()
-        year_range = st.sidebar.slider("Select Year Range", year_min, year_max, (2000, 2020), key = "slider_tab4")
+        year_range = filters.slider("Year range", year_min, year_max, (2000, 2020), key = "slider_tab4")
 
         violence_types = {
             "sb_total_deaths_best_cy": "State-based",
@@ -27,16 +28,16 @@ class tab_four:
             "os_total_deaths_best_cy": "One-sided",
             "cumulative_total_deaths_in_orgvio_best_cy": "All types (cumulative)"
         }
-        type_selected = st.sidebar.selectbox(
-            "Select Type of Violence",
+        type_selected = filters.selectbox(
+            "Type",
             options = list(violence_types.keys()),
             format_func = lambda x: violence_types[x],
             key="selectbox_tab4"
         )
 
         # Allow user to pick whether to compare countries within a region or compare regions
-        compare_mode = st.sidebar.radio(
-            "Comparison Mode",
+        compare_mode = filters.radio(
+            "Compare",
             ("Countries in a Region", "Regions vs Regions"),
             key = "radio_compare_mode_tab4"
         )
@@ -44,15 +45,15 @@ class tab_four:
         regions = list(self.data_handler.get_regions())
 
         if compare_mode == "Countries in a Region":
-            region_selected = st.sidebar.selectbox(
-                "Select Region",
+            region_selected = filters.selectbox(
+                "Region",
                 options = regions,
                 index = 0,
                 key="selectbox_region_tab4"
             )
 
-            countries = st.sidebar.multiselect(
-                "Select Countries",
+            countries = filters.multiselect(
+                "Countries",
                 options = list(self.data_handler.get_countries_by_region(region_selected)),
                 default = [],
                 key="multiselect_tab4"
@@ -79,8 +80,8 @@ class tab_four:
 
         else:
             # Regions vs Regions mode
-            selected_regions = st.sidebar.multiselect(
-                "Select Regions",
+            selected_regions = filters.multiselect(
+                "Regions",
                 options = regions,
                 default = regions[:3],
                 key="multiselect_regions_tab4"
