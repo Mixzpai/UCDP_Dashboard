@@ -7,7 +7,7 @@ class tab_three:
     def __init__(self):
         self.data_handler = UCDP_Data()
 
-    def display(self):
+    def display(self, sidebar):
         st.header("Animated Deaths Over Time")
         st.write(
             "The Animated Deaths tab presents a dynamic bar chart showing how deaths from state-based, "
@@ -18,12 +18,13 @@ class tab_three:
         )
 
 
-        # Sidebar controls
-        st.sidebar.header("Tab 3 Controls")
+        # Sidebar controls (render into provided container)
+        sidebar.header("Tab 3 Controls")
+        filters = sidebar.expander("Filters", expanded=True)
         year_min, year_max = self.data_handler.get_year_range()
-        year_range = st.sidebar.slider("Select Year Range", year_min, year_max, (2000, 2020), key = "slider_tab3")
-        countries = st.sidebar.multiselect(
-            "Select Countries",
+        year_range = filters.slider("Year range", year_min, year_max, (2000, 2020), key = "slider_tab3")
+        countries = filters.multiselect(
+            "Countries",
             self.data_handler.get_countries(),
             default = []
         )
