@@ -22,7 +22,7 @@ tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
     "Summary"
 ])
 
-# --- Tab 1: Overview ---
+# Tab 1: Overview
 with tab1:
     st.header("Overview")
     st.write("->description")
@@ -35,12 +35,12 @@ with tab2:
     t2_inst = t2()
     t2_inst.display()
 
-# --- Tab 3: Comparisons ---
+# Tab 3: Comparisons
 with tab3:
     t3_inst = t3()
     t3_inst.display()
 
-# --- Tab 4: Regional Analysis ---
+# Tab 4: Regional Analysis
 with tab4:
     st.header("Regional Analysis")
     st.write("->description")
@@ -48,7 +48,7 @@ with tab4:
     # Example: Import streamlit visualisations
     st.write("Yes.....")
 
-# --- Tab 5: Predictions ---
+# Tab 5: Geospatial Heatmaps
 with tab5:
     st.header("Geospatial heatmaps")
     st.write("->description")
@@ -56,7 +56,7 @@ with tab5:
     # Example: Import streamlit visualisations
     st.write("Yes.....")
 
-# --- Tab 6: Summary ---
+# Tab 6: Summary
 with tab6:
     st.header("Summary")
     st.write("->description")
