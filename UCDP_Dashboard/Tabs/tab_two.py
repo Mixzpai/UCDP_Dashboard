@@ -6,18 +6,19 @@ class tab_two:
     def __init__(self):
         self.data_handler = UCDP_Data()
 
-    def display(self):
+    def display(self, sidebar):
         st.header("Trends")
         st.write(
             "The Trends tab shows how different types of conflict deaths change over time. "
             "Users can filter by year, violence type, and country to view interactive line charts "
-            "that reveal majosr shifts and patterns in global violence."
+            "that reveal major shifts and patterns in global violence."
         )
 
-        # Sidebar controls
-        st.sidebar.header("Tab 2 Controls")
+        # Sidebar controls (rendered into the provided container)
+        sidebar.header("Tab 2 Controls")
+        filters = sidebar.expander("Filters", expanded=True)
         year_min, year_max = self.data_handler.get_year_range()
-        year_range = st.sidebar.slider("Select Year Range", year_min, year_max, (2000, 2020), key = "slider_tab2")
+        year_range = filters.slider("Year range", year_min, year_max, (2000, 2020), key = "slider_tab2")
 
         violence_types = {
             "sb_total_deaths_best_cy": "State-based",
@@ -25,14 +26,14 @@ class tab_two:
             "os_total_deaths_best_cy": "One-sided",
             "cumulative_total_deaths_in_orgvio_best_cy": "All types (cumulative)"
         }
-        type_selected = st.sidebar.selectbox(
-            "Select Type of Violence",
+        type_selected = filters.selectbox(
+            "Type",
             options = list(violence_types.keys()),
             format_func = lambda x: violence_types[x]
         )
 
-        countries = st.sidebar.multiselect(
-            "Select Countries",
+        countries = filters.multiselect(
+            "Countries",
             self.data_handler.get_countries(),
             default = [],
             key="multiselect_tab2"
