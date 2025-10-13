@@ -16,7 +16,7 @@ class tab_five:
 
         # Sidebar controls
         sidebar.header("Tab 5 Controls")
-        filters = sidebar.expander("Filters", expanded=True)
+        filters = sidebar.expander("Filters", expanded=False)
         year_min, year_max = self.data_handler.get_year_range()
         year_range = filters.slider("Year range", year_min, year_max, (2000, 2020), key = "slider_tab5")
 
