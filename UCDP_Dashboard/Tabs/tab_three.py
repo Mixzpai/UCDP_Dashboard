@@ -7,8 +7,15 @@ class tab_three:
         self.data_handler = UCDP_Data()
 
     def display(self):
-        st.header("Animated Deaths by Conflict Type Over Time")
-        st.write("This animation shows the changes in deaths for each conflict type over the years.")
+        st.header("Animated Deaths Over Time")
+        st.write(
+            "The Animated Deaths tab presents a dynamic bar chart showing how deaths from state-based, "
+            "non-state, and one-sided conflicts change over time. It highlights the top 10 most affected "
+            "countries each year, allowing users to track shifts in conflict intensity and compare how "
+            "different types of violence evolve across nations. Users can also filter and compare specific "
+            "countries through the sidebar controls."
+        )
+
 
         # Sidebar controls
         st.sidebar.header("Tab 3 Controls")
