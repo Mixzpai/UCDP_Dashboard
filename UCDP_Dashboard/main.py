@@ -1,18 +1,19 @@
 import streamlit as st
 from Tabs.tab_two import tab_two as t2
 from Tabs.tab_three import tab_three as t3
+from Tabs.tab_four import tab_four as t4
 
-# --- Page Configuration ---
+# Page Configuration
 st.set_page_config(
     page_title = "",
     layout = "wide"
 )
 
-# --- Header ---
+# Header
 st.title("📈 Walking Frames ")
 st.markdown("-> Insert description for dashboard.")
 
-# --- Tabs ---
+# Tabs
 tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
     "Overview",
     "Trends (Time Series)",
@@ -42,11 +43,8 @@ with tab3:
 
 # Tab 4: Regional Analysis
 with tab4:
-    st.header("Regional Analysis")
-    st.write("->description")
-    
-    # Example: Import streamlit visualisations
-    st.write("Yes.....")
+    t4_inst = t4()
+    t4_inst.display()
 
 # Tab 5: Geospatial Heatmaps
 with tab5:
