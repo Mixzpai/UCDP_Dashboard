@@ -100,10 +100,10 @@ class tab_four:
         deaths_per_year = filtered.groupby("year_cy")[type_selected].sum().reset_index()
         fig_region_time = px.bar(
             deaths_per_year,
-            x="year_cy",
-            y=type_selected,
-            title=f"Total Deaths Over Time in {region_selected} ({violence_types[type_selected]})",
-            labels={type_selected: "Deaths", "year_cy": "Year"}
+            x = "year_cy",
+            y = type_selected,
+            title = f"Total Deaths Over Time in {region_selected} ({violence_types[type_selected]})",
+            labels = {type_selected: "Deaths", "year_cy": "Year"}
         )
         st.plotly_chart(fig_region_time, use_container_width = True)
 
@@ -127,11 +127,11 @@ class tab_four:
 
         fig = px.line(
             agg,
-            x="year_cy",
-            y=type_selected,
-            color="country_cy",
-            title=f"{violence_types[type_selected]} over time by country in {region_selected}",
-            labels={type_selected: "Deaths", "year_cy": "Year", "country_cy": "Country"}
+            x = "year_cy",
+            y = type_selected,
+            color = "country_cy",
+            title = f"{violence_types[type_selected]} over time by country in {region_selected}",
+            labels = {type_selected: "Deaths", "year_cy": "Year", "country_cy": "Country"}
         )
         st.plotly_chart(fig, use_container_width = True)
 
