@@ -7,7 +7,7 @@ class tab_five:
     def __init__(self):
         self.data_handler = UCDP_Data()
 
-    def display(self):
+    def display(self, sidebar):
         st.header("Geographic Distribution of Deaths")
         st.write(
             "This tab shows an animated choropleth map of conflict-related deaths by country. "
@@ -15,9 +15,10 @@ class tab_five:
         )
 
         # Sidebar controls
-        st.sidebar.header("Tab 5 Controls")
+        sidebar.header("Tab 5 Controls")
+        filters = sidebar.expander("Filters", expanded=True)
         year_min, year_max = self.data_handler.get_year_range()
-        year_range = st.sidebar.slider("Select Year Range", year_min, year_max, (2000, 2020), key = "slider_tab5")
+        year_range = filters.slider("Year range", year_min, year_max, (2000, 2020), key = "slider_tab5")
 
         violence_types = {
             "sb_total_deaths_best_cy": "State-based",
@@ -25,15 +26,15 @@ class tab_five:
             "os_total_deaths_best_cy": "One-sided",
             "cumulative_total_deaths_in_orgvio_best_cy": "All types (cumulative)"
         }
-        type_selected = st.sidebar.selectbox(
-            "Select Type of Violence",
+        type_selected = filters.selectbox(
+            "Type",
             options = list(violence_types.keys()),
             format_func = lambda x: violence_types[x],
             key="selectbox_tab5"
         )
 
-        countries = st.sidebar.multiselect(
-            "Select Countries",
+        countries = filters.multiselect(
+            "Countries",
             self.data_handler.get_countries(),
             default = [],
             key="multiselect_tab5"
