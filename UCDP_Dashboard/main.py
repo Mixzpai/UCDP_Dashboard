@@ -1,74 +1,61 @@
+# main.py — Sidebar shows only the active view's controls
 import streamlit as st
-from Tabs.tab_two import tab_two as t2
-from Tabs.tab_three import tab_three as t3
-from Tabs.tab_four import tab_four as t4
-from Tabs.tab_five import tab_five as t5
+from Tabs.tab_two import tab_two as T2
+from Tabs.tab_three import tab_three as T3
+from Tabs.tab_four import tab_four as T4
+from Tabs.tab_five import tab_five as T5
 
-# Page Configuration
-st.set_page_config(
-    page_title = "",
-    layout = "wide"
-)
-
-# Header
+st.set_page_config(page_title="", layout="wide")
 st.title("📈 Walking Frames ")
 st.markdown("-> Insert description for dashboard.")
 
-# Single sidebar container
-sidebar_container = st.sidebar.container()
+# ---- Tab registry (name -> class) ----
+TABS = {
+    "Overview": None,
+    "Trends (Time Series)": T2,
+    "Comparisons (Animated)": T3,
+    "Regional Analysis": T4,
+    "Geospatial Heatmaps": T5,
+    "Summary": None,
+}
 
-# Tabs
-tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
-    "Overview",
-    "Trends (Time Series)",
-    "Comparisons (Animated)",
-    "Regional Analysis",
-    "Geospatial Heatmaps",
-    "Summary"
-])
+# ---- Keep track of active tab in session state ----
+if "active_tab" not in st.session_state:
+    st.session_state.active_tab = "Overview"
 
-# Tab 1: Overview
-with tab1:
-    # clear sidebar controls when opening this tab
-    sidebar_container.empty()
+# ---- Render a tab-like header (buttons) ----
+tab_names = list(TABS.keys())
+cols = st.columns(len(tab_names))
+for i, name in enumerate(tab_names):
+    is_active = (st.session_state.active_tab == name)
+    if cols[i].button(name, type="primary" if is_active else "secondary", use_container_width=True):
+        st.session_state.active_tab = name
+
+st.markdown("---")
+
+# ---- Clear sidebar first, then render ONLY the active view's controls ----
+st.sidebar.empty()
+active = st.session_state.active_tab
+
+# ---- Render main content + per-view sidebar ----
+if active == "Overview":
     st.header("Overview")
     st.write("->description")
-    
-    # Example: Import streamlit visualisations
     st.write("Yes.....")
 
-# Tab 2: Trends
-with tab2:
-    # render tab-specific controls into the sidebar container
-    sidebar_container.empty()
-    t2_inst = t2()
-    t2_inst.display(sidebar_container)
+elif active == "Trends (Time Series)":
+    T2().display(st.sidebar)
 
-# Tab 3: Comparisons
-with tab3:
-    sidebar_container.empty()
-    t3_inst = t3()
-    t3_inst.display(sidebar_container)
+elif active == "Comparisons (Animated)":
+    T3().display(st.sidebar)
 
-# Tab 4: Regional Analysis
-with tab4:
-    sidebar_container.empty()
-    t4_inst = t4()
-    t4_inst.display(sidebar_container)
+elif active == "Regional Analysis":
+    T4().display(st.sidebar)
 
-# Tab 5: Geospatial Heatmaps
-with tab5:
-    sidebar_container.empty()
-    t5_inst = t5()
-    t5_inst.display(sidebar_container)
+elif active == "Geospatial Heatmaps":
+    T5().display(st.sidebar)
 
-# Tab 6: Summary
-with tab6:
-    # clear sidebar controls when opening this tab
-    sidebar_container.empty()
+elif active == "Summary":
     st.header("Summary")
     st.write("->description")
-    
-    # Example: Import streamlit visualisations
     st.write("Yes.....")
-
