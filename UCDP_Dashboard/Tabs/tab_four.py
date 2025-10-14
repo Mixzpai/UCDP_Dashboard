@@ -18,7 +18,7 @@ class tab_four:
 
         # Sidebar controls (render into provided container)
         sidebar.header("Tab 4 Controls")
-        filters = sidebar.expander("Filters", expanded=False)
+        filters = sidebar.expander("Filters", expanded=True)
         year_min, year_max = self.data_handler.get_year_range()
         year_range = filters.slider("Year range", year_min, year_max, (2000, 2020), key = "slider_tab4")
 

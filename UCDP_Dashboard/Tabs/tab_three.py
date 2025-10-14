@@ -20,7 +20,7 @@ class tab_three:
 
         # Sidebar controls (render into provided container)
         sidebar.header("Tab 3 Controls")
-        filters = sidebar.expander("Filters", expanded=False)
+        filters = sidebar.expander("Filters", expanded=True)
         year_min, year_max = self.data_handler.get_year_range()
         year_range = filters.slider("Year range", year_min, year_max, (2000, 2020), key = "slider_tab3")
         countries = filters.multiselect(
@@ -72,38 +72,18 @@ class tab_three:
         country_order = top_countries
         merged['country_cy'] = pd.Categorical(merged['country_cy'], categories=country_order[::-1], ordered=True)
 
-        # Create a pivot so we can interpolate deaths for each (country, conflict type) pair
-        pivot = merged.pivot_table(index=['country_cy', 'Conflict Type'], columns='year_cy', values='Deaths', aggfunc='sum', fill_value=0)
-
-        # Create intermediate fractional frames between integer years
-        year_min, year_max = int(pivot.columns.min()), int(pivot.columns.max())
-        steps_per_year = 4  # increase for smoother but heavier animation
-        frame_years = []
-        for y in range(year_min, year_max):
-            for k in range(steps_per_year):
-                frame_years.append(y + k/steps_per_year)
-        frame_years.append(year_max)
-
-        # Reindex columns to include fractional years and interpolate
-        pivot = pivot.reindex(columns=frame_years)
-        pivot = pivot.interpolate(axis=1, limit_direction='both')
-
-        # Melt back into long form with a 'frame' column (float) used for animation_frame
-        interp = pivot.reset_index().melt(id_vars=['country_cy', 'Conflict Type'], var_name='frame', value_name='Deaths')
-
-        # Ensure Deaths are numeric
-        interp['Deaths'] = interp['Deaths'].astype(float)
-
         # Compute a fixed x-axis range based on max total deaths across countries and years
         max_total = total_deaths.groupby(['year_cy', 'country_cy'])['Deaths'].sum().max()
 
+        speed = st.session_state.get("speed_slider_tab3_main", 800)
+
         fig = px.bar(
-            interp,
+            merged,
             x = "Deaths",
             y = "country_cy",
             color = "Conflict Type",
             orientation = "h",
-            animation_frame = "frame",
+            animation_frame = "year_cy",
             animation_group = "country_cy",
             barmode = "group",
             category_orders={'country_cy': country_order[::-1]},
@@ -116,13 +96,17 @@ class tab_three:
             margin = dict(l = 120, b = 120),
             xaxis = dict(range=[0, max_total * 1.1])
         )
+        
 
         # Make the animation transitions smoother and adjust play button controls
         if 'updatemenus' in fig.layout and len(fig.layout.updatemenus) > 0:
             try:
-                fig.layout.updatemenus[0].buttons[0].args[1]['frame']['duration'] = 200
-                fig.layout.updatemenus[0].buttons[0].args[1]['transition']['duration'] = 200
+                fig.layout.updatemenus[0].buttons[0].args[1]['frame']['duration'] = speed
+                fig.layout.updatemenus[0].buttons[0].args[1]['transition']['duration'] = speed /2
                 fig.layout.updatemenus[0].buttons[0].args[1]['transition']['easing'] = 'linear'
             except Exception:
                 pass
         st.plotly_chart(fig, use_container_width = True)
+        st.slider("Animation Duration (ms)", min_value=100, max_value=2000, step=100, value=800, key="speed_slider_tab3_main",
+                    help="Adjust how quickly the animation plays — higher values = slower animation.")
+        

@@ -16,7 +16,7 @@ class tab_five:
 
         # Sidebar controls
         sidebar.header("Tab 5 Controls")
-        filters = sidebar.expander("Filters", expanded=False)
+        filters = sidebar.expander("Filters", expanded=True)
         year_min, year_max = self.data_handler.get_year_range()
         year_range = filters.slider("Year range", year_min, year_max, (2000, 2020), key = "slider_tab5")
 
@@ -48,8 +48,10 @@ class tab_five:
             st.info("No data available for the selected filters.")
             return
 
+        speed = st.session_state.get("speed_slider_tab5_main", 800)
+
         # Animated choropleth map
-        st.subheader("Geographic Distribution of Deaths")
+        # st.subheader("Geographic Distribution of Deaths")
         fig_map = px.choropleth(
             filtered,
             locations = "country_cy",
@@ -60,6 +62,8 @@ class tab_five:
             title=f"Conflict Deaths by Country (Animated) – {violence_types[type_selected]}",
             color_continuous_scale="Reds"
         )
+
+
         # Make the figure larger and improve layout for readability
         fig_map.update_layout(
             height = 750,
@@ -70,6 +74,14 @@ class tab_five:
 
         # Disable interactive panning/zooming while preserving hover and animation
         fig_map.update_layout(dragmode=False)
+
+        if 'updatemenus' in fig_map.layout and len(fig_map.layout.updatemenus) > 0:
+            try:
+                fig_map.layout.updatemenus[0].buttons[0].args[1]['frame']['duration'] = int(speed)
+                fig_map.layout.updatemenus[0].buttons[0].args[1]['transition']['duration'] = int(speed) // 2
+                fig_map.layout.updatemenus[0].buttons[0].args[1]['transition']['easing'] = 'linear'
+            except Exception:
+                pass
 
         # Remove modebar buttons that allow zooming/panning and keep the chart responsive
         config = {
@@ -89,3 +101,6 @@ class tab_five:
         }
 
         st.plotly_chart(fig_map, use_container_width = True, config = config)
+
+        st.slider("Animation Duration (ms)", min_value=100, max_value=2000, step=100, value=800, key="speed_slider_tab5_main",
+                    help="Adjust how quickly the animation plays — higher values = slower animation.")
