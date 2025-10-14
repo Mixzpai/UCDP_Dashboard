@@ -23,8 +23,7 @@ TABS = {
     "Trends (Time Series)": T2,
     "Comparisons (Animated)": T3,
     "Regional Analysis": T4,
-    "Geospatial Heatmaps": T5,
-    "Summary": None,
+    "Geospatial Heatmaps": T5
 }
 
 # ---- Keep track of active tab in session state ----
@@ -58,10 +57,5 @@ elif active == "Comparisons (Animated)":
 elif active == "Regional Analysis":
     T4().display(st.sidebar)
 
-elif active == "Geospatial Heatmaps":
+elif active == "Geospatial Heatmap":
     T5().display(st.sidebar)
-
-elif active == "Summary":
-    st.header("Summary")
-    st.write("->description")
-    st.write("Yes.....")
