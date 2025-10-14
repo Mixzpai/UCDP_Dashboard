@@ -6,8 +6,15 @@ from Tabs.tab_four import tab_four as T4
 from Tabs.tab_five import tab_five as T5
 
 st.set_page_config(page_title="", layout="wide")
-st.title("📈 Walking Frames ")
-st.markdown("-> Insert description for dashboard.")
+st.title("UCDP Global Conflict Visualization Hub")
+st.markdown(
+    """
+    Welcome to the **Walking Frames Dashboard** interactive data exploration tool 
+    designed to visualize global conflict trends using the UCDP dataset.  
+    Navigate through the tabs below to explore time series patterns, animated comparisons, 
+    regional analyses, and geospatial insights.
+    """
+)
 
 # ---- Tab registry (name -> class) ----
 TABS = {
