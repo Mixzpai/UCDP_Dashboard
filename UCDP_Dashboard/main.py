@@ -23,7 +23,7 @@ TABS = {
     "Trends (Time Series)": T2,
     "Comparisons (Animated)": T3,
     "Regional Analysis": T4,
-    "Geospatial Heatmaps": T5
+    "Geospatial Heatmap": T5
 }
 
 # ---- Keep track of active tab in session state ----
