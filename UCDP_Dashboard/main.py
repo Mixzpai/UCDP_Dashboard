@@ -1,5 +1,6 @@
 # main.py — Sidebar shows only the active view's controls
 import streamlit as st
+from Tabs.tab_one import tab_one as T1
 from Tabs.tab_two import tab_two as T2
 from Tabs.tab_three import tab_three as T3
 from Tabs.tab_four import tab_four as T4
@@ -46,9 +47,7 @@ active = st.session_state.active_tab
 
 # ---- Render main content + per-view sidebar ----
 if active == "Overview":
-    st.header("Overview")
-    st.write("->description")
-    st.write("Yes.....")
+    T1().display()
 
 elif active == "Trends (Time Series)":
     T2().display(st.sidebar)
