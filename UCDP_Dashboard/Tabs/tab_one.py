@@ -45,7 +45,6 @@ class tab_one:
             - **Comparisons (Animated):** Compare how different countries and violence types evolve dynamically  
             - **Regional Analysis:** Examine conflict distribution across world regions  
             - **Geospatial Heatmaps:** Visualize where conflict intensity is concentrated on the map  
-            - **Summary:** Review synthesized findings and insights
             """
         )
 
