@@ -46,7 +46,7 @@ active = st.session_state.active_tab
 
 # ---- Render main content + per-view sidebar ----
 if active == "Overview":
-    T1().display()
+    T1().display(st.sidebar)
 
 elif active == "Trends (Time Series)":
     T2().display(st.sidebar)
