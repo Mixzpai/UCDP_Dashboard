@@ -11,9 +11,13 @@ An interactive Streamlit dashboard for exploring and summarising the Uppsala Con
 
 ## Quick Start
 
-### 1) Open an IDE and open the project root in the terminal, and run:
+### 1)Obtaining the project files:
+Two options:
+
+#### a) Open an IDE or Command Prompt and open the project root in the terminal, and run:
 git clone https://github.com/Mixzpai/UCDP_Dashboard.git
 
+#### b) Extract the files from the provided zip file
 
 ### 2) Create and activate a virtual environment. In the terminal, run: 
 
